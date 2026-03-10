@@ -1,14 +1,12 @@
+import os
 import streamlit as st
 import google.generativeai as genai
 
 # --- 1. 초기 설정 및 API 키 세팅 (보안 업데이트 🛡️) ---
-# 인터넷(Streamlit Cloud)에 올렸을 때는 안전한 금고(secrets)에서 키를 꺼내옵니다.
 try:
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
-except KeyError:
-    # 내 컴퓨터에서 잠시 테스트할 때만 아래에 키를 입력하세요.
-    # ⚠️ 나중에 인터넷(GitHub)에 파일을 올리기 전에는 반드시 이 부분을 다시 빈칸으로 지워야 합니다!
-    GEMINI_API_KEY = "여기에_발급받은_API_KEY를_입력하세요" 
+except (KeyError, FileNotFoundError):
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 genai.configure(api_key=GEMINI_API_KEY)
 
@@ -22,7 +20,6 @@ mock_price_db = {
 }
 
 # --- 3. AI 모델 설정 ---
-# 약사님이 직접 찾아내신 최신 모델을 적용했습니다!
 model = genai.GenerativeModel('gemini-2.5-flash')
 
 def get_ai_recommendation(product_name):
