@@ -6,7 +6,7 @@ import google.generativeai as genai
 try:
     GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 except (KeyError, FileNotFoundError):
-    GEMINI_API_KEY = "AIzaSyDgWuhSrS-ojHl379aAUS9lUGLp09Aogb0"
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 genai.configure(api_key=GEMINI_API_KEY)
 
